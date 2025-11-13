@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -25,7 +25,15 @@ export default function ThreatCalculator() {
     }>
   >([])
 
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    console.log("[v0] Component mounted and hydrated")
+  }, [])
+
   const addPilot = () => {
+    console.log("[v0] addPilot called")
     setPilots([
       ...pilots,
       {
@@ -199,7 +207,16 @@ export default function ThreatCalculator() {
 
         {/* Add Pilot Button */}
         <div className="mb-6 flex justify-center">
-          <Button onClick={addPilot} size="lg" className="bg-amber-600 hover:bg-amber-700 text-slate-950">
+          <Button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              console.log("[v0] Button clicked, mounted:", mounted)
+              addPilot()
+            }}
+            size="lg"
+            className="bg-amber-600 hover:bg-amber-700 text-slate-950"
+          >
             <PlusCircle className="mr-2 w-5 h-5" />
             Add Pilot
           </Button>
@@ -230,6 +247,7 @@ export default function ThreatCalculator() {
                         Threat: {calculatePilotThreat(pilot)}
                       </Badge>
                       <Button
+                        type="button"
                         variant="ghost"
                         size="sm"
                         onClick={() => removePilot(pilot.id)}
@@ -365,6 +383,7 @@ export default function ThreatCalculator() {
                                   </div>
                                   <div className="flex items-center gap-2">
                                     <Button
+                                      type="button"
                                       size="sm"
                                       variant="outline"
                                       onClick={() => removeUpgrade(pilot.id, upgrade.name)}
@@ -376,6 +395,7 @@ export default function ThreatCalculator() {
                                       {upgrade.quantity}
                                     </Badge>
                                     <Button
+                                      type="button"
                                       size="sm"
                                       variant="outline"
                                       onClick={() => addUpgrade(pilot.id, upgrade.name)}
@@ -384,6 +404,7 @@ export default function ThreatCalculator() {
                                       <Plus className="w-4 h-4" />
                                     </Button>
                                     <Button
+                                      type="button"
                                       size="sm"
                                       variant="ghost"
                                       onClick={() => deleteUpgrade(pilot.id, upgrade.name)}
@@ -433,6 +454,7 @@ export default function ThreatCalculator() {
                                       </Badge>
                                     )}
                                     <Button
+                                      type="button"
                                       size="sm"
                                       variant="outline"
                                       onClick={() => addUpgrade(pilot.id, upgrade.name)}
@@ -472,6 +494,7 @@ export default function ThreatCalculator() {
                                   </div>
                                 </div>
                                 <Button
+                                  type="button"
                                   size="sm"
                                   variant={pilot.abilities.includes(ability.name) ? "default" : "outline"}
                                   onClick={() => {
