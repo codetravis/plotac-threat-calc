@@ -9,7 +9,26 @@ export const careerPaths = [
   "Miner",
 ]
 
-export const ships = [
+type SizeModifier = Record<1 | 2 | 3, number>
+type AgilityModifier = Record<0 | 1 | 2 | 3 | 4, number>
+
+export interface Ship {
+  name: string
+  baseThreat: number
+  slots: string[]
+  size: 1 | 2 | 3
+  agility: 0 | 1 | 2 | 3 | 4
+}
+
+export interface Upgrade {
+  name: string
+  type: string
+  threat: number
+  sizeModifier: SizeModifier
+  agilityModifier: AgilityModifier
+}
+
+export const ships: Ship[] = [
   { name: "TYE-Wing", baseThreat: 10, slots: ["Illicit"], size: 1, agility: 2 },
   { name: "Y-TIE", baseThreat: 15, slots: ["Illicit", "Modification", "Turret", "Astromech"], size: 1, agility: 2 },
   { name: "Modified TIE/ln", baseThreat: 20, slots: ["Modification"], size: 1, agility: 3 },
@@ -177,7 +196,7 @@ export const ships = [
   },
 ]
 
-export const upgrades = [
+export const upgrades: Upgrade[] = [
   // Astromech
   {
     name: "R2 Astromech",

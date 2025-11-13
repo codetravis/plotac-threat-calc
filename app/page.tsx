@@ -124,11 +124,11 @@ export default function ThreatCalculator() {
 
     const upgradeThreat = pilot.upgrades.reduce((total: number, upgrade: { name: string; quantity: number }) => {
       const upgradeData = upgrades.find((u) => u.name === upgrade.name)
-      if (!upgradeData) return total
+      if (!upgradeData || !ship) return total
 
       const baseThreat = upgradeData.threat
-      const sizeModifier = upgradeData.sizeModifier[ship?.size || 1] || 0
-      const agilityModifier = upgradeData.agilityModifier[ship?.agility || 0] || 0
+      const sizeModifier = upgradeData.sizeModifier[ship.size] || 0
+      const agilityModifier = upgradeData.agilityModifier[ship.agility] || 0
       const totalThreat = baseThreat + sizeModifier + agilityModifier
 
       return total + totalThreat * upgrade.quantity
@@ -341,11 +341,11 @@ export default function ThreatCalculator() {
                             <div className="text-sm font-medium text-slate-300 mb-2">Equipped Upgrades</div>
                             {pilot.upgrades.map((upgrade) => {
                               const upgradeData = upgrades.find((u) => u.name === upgrade.name)
-                              if (!upgradeData) return null
+                              if (!upgradeData || !ship) return null
 
                               const baseThreat = upgradeData.threat
-                              const sizeModifier = upgradeData.sizeModifier[ship?.size || 1] || 0
-                              const agilityModifier = upgradeData.agilityModifier[ship?.agility || 0] || 0
+                              const sizeModifier = upgradeData.sizeModifier[ship.size] || 0
+                              const agilityModifier = upgradeData.agilityModifier[ship.agility] || 0
                               const totalThreat = baseThreat + sizeModifier + agilityModifier
 
                               return (
@@ -407,8 +407,8 @@ export default function ThreatCalculator() {
                             {upgrades.map((upgrade) => {
                               const existingUpgrade = pilot.upgrades.find((u) => u.name === upgrade.name)
                               const baseThreat = upgrade.threat
-                              const sizeModifier = upgrade.sizeModifier[ship?.size || 1] || 0
-                              const agilityModifier = upgrade.agilityModifier[ship?.agility || 0] || 0
+                              const sizeModifier = ship ? upgrade.sizeModifier[ship.size] || 0 : 0
+                              const agilityModifier = ship ? upgrade.agilityModifier[ship.agility] || 0 : 0
                               const totalThreat = baseThreat + sizeModifier + agilityModifier
 
                               return (
@@ -438,7 +438,7 @@ export default function ThreatCalculator() {
                                       onClick={() => addUpgrade(pilot.id, upgrade.name)}
                                       className="border-slate-600 text-slate-300"
                                     >
-                                      <Plus className="w-4 h-4" />
+                                      Add
                                     </Button>
                                   </div>
                                 </div>
